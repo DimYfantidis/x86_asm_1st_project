@@ -10,7 +10,8 @@
 ;   - 24/11/2023: Added function to convert WORDs to their corresponding alphanumerics.
 ;   - 25/11/2023: Added function to print WORDs to the console, print_word (buggy)
 ;   - 26/11/2023: Fixed print_word + Added print_array + Added print_alnum
-; Date: 26/11/2023
+;   - 01/12/2023: Completed remaining comments.
+; Date: 01/12/2023
 
 .model flat, stdcall
 .stack 4096
@@ -59,7 +60,7 @@ _start:
     MOV DS, AX		; Initialize data segment                            
                                                          
 	CLD 
-	LEA SI, inputArray	; Index to Source memory is the input array
+	LEA SI, inputArray  ; Index to Source memory is the input array
 	LEA DI, inverseArray	; Index to Destination memory is set to the transposed arry
 	ADD DI, lengthInBytes	; It is incremented to point to the end of array
 	ADD DI, -2		; Decremented by 2 to point to the final element of the transposed array
@@ -181,6 +182,7 @@ print_word PROC NEAR
 	MOV     DS, AX
 
 ; Skip missing digits in the front
+; e.g. when printing 13, the first 3 digits should be skipped (00013).
 skip_nulls:
 	MOV     DL, [SI]
 	CMP     DL, 0
@@ -201,7 +203,7 @@ show_string:
 
 
 	MOV     AX, @data
-	MOV     DS, AX
+	MOV     DS, AX      ; Restore DS.
 
 	RET                    
 print_word ENDP
@@ -219,7 +221,7 @@ print_array PROC NEAR
 	MOV     CX, 6
 
 array_print_loop:
-	; Precursor protocol for "parse_word" function call
+    ; Precursor protocol for "parse_word" function call
 	MOV     AX, [SI]    ; get next number
 	MOV     [num],  AX  ; store it to [num]
 	PUSH    SI
@@ -227,7 +229,7 @@ array_print_loop:
 	; Convert [num] to text.
 	CALL    parse_word
 	POP     BX
-
+	
 	; Precursor protocol for "print_word" function call
 	PUSH    BX
 	PUSH    CX
