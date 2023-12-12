@@ -18,7 +18,7 @@
 
 .data
 ; Input array and its length
-inputArray  DW  12, 6, 34, 8, 21, 4      ; My random array with 6 words
+inputArray  DW  12000, 600, 34, 8, 21, 4      ; My random array with 6 words
 lengthInBytes = ($-inputArray)
 len = 6
 
@@ -26,11 +26,17 @@ len = 6
 ; Output arrays
 inverseArray DW  0, 0, 0, 0, 0, 0
 prefixSumArray  DW  0, 0, 0, 0, 0, 0
+; Note: Ideally the prefix-sum array should have DWORD elements and not WORD 
+; to avoid overflow (computed with ADD, ADC instructions) but there are no EAX 
+; nor EDX registers. Thus division between a DWORD and a WORD should likely result 
+; in overflow (quotient should usually be larger than 0xFFFF and wouldn't fit 
+; in AX). As a consequence, I can't seem to find a way to parse a DWORD to print it 
+; on the screen in decimal form.
 
 
 ; Variables for WORD to string conversion
 ; Buffer String
-stringRepresentation    DB  0, 0, 0, 0, 0
+stringRepresentation    DW  0, 0, 0, 0, 0
 ; Digits as ASCII characters
 digitsAscii     DB  '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'
 ; Quotient for parse_word
@@ -47,15 +53,14 @@ positionConfig  DW  ?
 
 
 ; Array Names
-input_name      DB  'I', 'N', 'P', 'U', 'T', ':', 0
-inverse_name    DB  'I', 'N', 'V', 'E', 'R', 'S', 'E', ':', 0
-prefix_name     DB  'P', 'R', '.', ' ', 'S', 'U', 'M', ':', 0
-
+input_name      DB  "INPUT:", 0
+inverse_name    DB  "INVERSE:", 0
+prefix_name     DB  "PR. SUM:", 0
 
 
 
 .code
-_start:
+_start: 
     MOV AX, @data
     MOV DS, AX		; Initialize data segment                            
                                                          
