@@ -61,11 +61,11 @@ prefix_name     DB  "PR. SUM:", 0
 
 .code
 _start: 
-    MOV AX, @data
-    MOV DS, AX		; Initialize data segment                            
+	MOV AX, @data
+	MOV DS, AX		; Initialize data segment                            
                                                          
 	CLD 
-	LEA SI, inputArray  ; Index to Source memory is the input array
+	LEA SI, inputArray  	; Index to Source memory is the input array
 	LEA DI, inverseArray	; Index to Destination memory is set to the transposed arry
 	ADD DI, lengthInBytes	; It is incremented to point to the end of array
 	ADD DI, -2		; Decremented by 2 to point to the final element of the transposed array
